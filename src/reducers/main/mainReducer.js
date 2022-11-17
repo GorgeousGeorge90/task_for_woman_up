@@ -32,7 +32,10 @@ const mainReducer = (state,action) => {
                 ...state,
                 tasks:state.tasks.map(task => {
                     if (task.id === action.payload) {
-
+                        return {
+                            ...task,
+                            complete: true,
+                        }
                     } else {
                         return task
                     }
@@ -53,4 +56,4 @@ const mainReducer = (state,action) => {
     }
 }
 
-export default mainReducer()
+export default mainReducer
