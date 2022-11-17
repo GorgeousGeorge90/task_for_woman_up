@@ -1,0 +1,7 @@
+export const mainTypes = {
+    ADD_TASK: 'ADD TASK',
+    COMPLETE_TASK: 'DELETE TASK',
+    CHANGE_TASK: 'CHANGE TASK',
+    DELETE_TASK: 'DELETE TASK',
+    GET_ALL_TASK: 'GET_ALL_TASK',
+}
