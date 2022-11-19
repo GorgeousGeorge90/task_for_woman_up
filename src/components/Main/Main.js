@@ -1,25 +1,34 @@
-import {useForm} from 'react-hook-form'
-import {useContext} from 'react';
+import {useContext, useEffect, useMemo} from 'react';
 import {MainContext} from '../../context/MainContext';
 import Task from './Task/Task';
+import Preloader from '../../common/Preloader/Preloader';
+import styles from './Main.module.scss';
+import Form from './Form/Form';
+
 
 const Main = () => {
-    const {tasks, addTask, deleteTask, completeTask} = useContext(MainContext)
-    const {handleSubmit,register, reset, formState:{errors}} = useForm()
-    const onSubmit = data =>{
-        const {title, description, date} = data
-        addTask(title, description, date)
-        reset()
+    const {tasks, isFetching, addTask, fetchTasks,
+            changeTask, deleteTask, completeTask,
+            addFile} = useContext(MainContext)
+    useEffect(()=>{
+        fetchTasks()
+    },[])
+
+    const completedTasks = useMemo(()=> {
+        return tasks.filter(task => task.complete === true)
+    },[tasks])
+
+    if (isFetching) {
+        return <Preloader/>
     }
+
     return (
-        <div>
+        <div className={styles.content}>
             <div>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <input {...register('title')} placeholder={'Title'}/>
-                    <input {...register('description')} placeholder={'Description'}/>
-                    <input {...register('date')} placeholder={'Final date'}/>
-                    <button type={'submit'}>Create</button>
-                </form>
+                <h3>Completed tasks:{completedTasks.length}</h3>
+            </div>
+            <div className={styles.form}>
+                <Form addTask={addTask}/>
             </div>
             <div>
                 {
@@ -27,6 +36,8 @@ const Main = () => {
                                             task={task}
                                             deleteTask={deleteTask}
                                             completeTask={completeTask}
+                                            changeTask={changeTask}
+                                            addFile={addFile}
                     />)
                 }
             </div>

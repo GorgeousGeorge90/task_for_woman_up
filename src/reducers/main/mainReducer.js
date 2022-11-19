@@ -1,4 +1,5 @@
 import {mainTypes} from './main.types';
+import task from "../../components/Main/Task/Task";
 
 
 const mainReducer = (state,action) => {
@@ -13,12 +14,12 @@ const mainReducer = (state,action) => {
 
         case mainTypes.ADD_TASK: {
             const newTask = {
-                id:state.tasks.length,
+                id:action.payload.id,
                 title: action.payload.title,
                 description: action.payload.description,
                 date: action.payload.date,
                 complete: false,
-                files: null,
+                file: null,
             }
 
             return {
@@ -43,11 +44,49 @@ const mainReducer = (state,action) => {
             }
         }
 
+        case mainTypes.CHANGE_TASK: {
+            return {
+                ...state,
+                tasks:state.tasks.map(task=> {
+                    if (task.id === action.payload.id) {
+                        return {
+                            ...task,
+                            description: action.payload.text,
+                        }
+                    } else {
+                        return task
+                    }
+                })
+            }
+        }
+
         case mainTypes.DELETE_TASK: {
             return {
                 ...state,
                 tasks: state.tasks.filter(task => task.id !== action.payload)
             }
+        }
+
+        case mainTypes.IS_FETCHING: {
+            return {
+                ...state,
+                isFetching: action.payload,
+            }
+        }
+
+        case mainTypes.ADD_FILE: {
+            return {
+                ...state,
+                file: action.payload,
+            }
+        }
+
+        case mainTypes.DELETE_FILE: {
+            return {
+                ...state,
+                file: null,
+            }
+
         }
 
         default: {

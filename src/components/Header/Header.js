@@ -6,9 +6,9 @@ const Header = ()=> {
     const setActive = ({isActive}) => ({color: isActive? 'red': 'white'})
     return (
         <header className={styles.content}>
-            <div>
+            <div className={styles.title}>
                 <h1>ToDo List</h1>
-                <p>test task for WomanUP</p>
+                <p>the base app</p>
             </div>
             <nav>
                 <ul>

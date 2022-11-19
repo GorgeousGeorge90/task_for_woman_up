@@ -1,13 +1,29 @@
 .content {
     background-color:black;
     height: 200px;
+    font-family: Helvetica;
     color: white;
     margin: 0 auto;
+    text-align: center;
+
+    .title {
+        h1, p {
+            margin-top: 0;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+            padding-top: 40px;
+        }
+    }
 
     nav {
-
+        margin-top: 60px ;
         ul {
             list-style: none;
+            display: flex;
+            align-self: end;
+            justify-content: space-evenly;
 
             li a{
                 text-decoration: none;
