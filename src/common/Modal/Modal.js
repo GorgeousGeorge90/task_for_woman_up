@@ -5,7 +5,7 @@ import styles from './Modal.module.scss';
 
 const modalRootElement = document.querySelector('#modal')
 
-const Modal = ({open, onClose, filesList})=> {
+const Modal = ({open, onClose, filesList, deleteFile})=> {
 
     const element = useMemo(()=> {
         const element = document.createElement('div')
@@ -20,13 +20,21 @@ const Modal = ({open, onClose, filesList})=> {
         }
     })
 
+    const deleteOldFile = (event,name) => {
+        event.stopPropagation()
+        deleteFile(name)
+    }
+
     if (open) {
         return createPortal(
             <div className={styles.content} onClick={onClose}>
                 <div className={styles.cards}>
                 {
                     filesList.map(file=>{
-                        return <p><img key={filesList.indexOf(file)} src={file} alt='pic'/></p>
+                        return <p>
+                                  <img key={filesList.indexOf(file)} src={file.url} alt='pic'/>
+                                  <span onClick={event=>deleteOldFile(event,file.name)}>&#128465;</span>
+                               </p>
                     })
                 }
                 </div>

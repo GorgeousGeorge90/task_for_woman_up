@@ -1,6 +1,7 @@
 import {useForm} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {MainSchema} from '../../../common/validators/MainSchema';
+import './Form.scss'
 
 
 const Form = ({addTask})=> {
