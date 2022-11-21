@@ -1,5 +1,15 @@
 import {mainTypes} from './main.types';
-import task from "../../components/Main/Task/Task";
+
+/**
+ *
+ * Редьюсер - чистая функция принимающая на вход state и action и возвращающая
+ * обновленный стейт ( реализованно через клоннирование state ( поверхностная + глубокая копия)
+ * т.е реализованна иммутабельность.
+ *
+ * @param state {Object} объект с полями tasks{array} - массив задач и isFetching{Boolean} - флаг для активации компонента Preloader
+ * @param action {object} объект с полями тип (type) и полезная нагрузка (payload) - для описания различных кейсов со state
+ * @return {(*&{tasks: unknown[]})|(*&{tasks: *[]})|(*&{isFetching})|(*&{file: null})|*|(*&{tasks})|(*&{tasks: T[]})|(*&{file})}
+ */
 
 
 const mainReducer = (state,action) => {
@@ -71,20 +81,6 @@ const mainReducer = (state,action) => {
             return {
                 ...state,
                 isFetching: action.payload,
-            }
-        }
-
-        case mainTypes.ADD_FILE: {
-            return {
-                ...state,
-                file: action.payload,
-            }
-        }
-
-        case mainTypes.DELETE_FILE: {
-            return {
-                ...state,
-                file: null,
             }
 
         }

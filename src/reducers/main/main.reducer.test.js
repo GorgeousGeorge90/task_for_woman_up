@@ -1,6 +1,15 @@
 import mainReducer from './mainReducer';
 import {mainActions} from "./main.actions";
 
+/**
+ *
+ * Юнит тест для редьюсера:
+ * проверка как изменится state при кейсе - удаления задачи
+ *
+ */
+
+
+
 it('task should be deleted',()=>{
     let action = mainActions.deleteTask(2)
     let state = {

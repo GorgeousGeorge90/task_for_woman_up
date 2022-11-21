@@ -3,6 +3,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {MainSchema} from '../../../common/validators/MainSchema';
 import './Form.scss'
 
+/**
+ *
+ * Компонент, отвечающий за отрисовку формы
+ *
+ * @param addTask {function}
+ * @return {JSX.Element}
+ * @constructor
+ */
+
 
 const Form = ({addTask})=> {
     const {handleSubmit,register, reset, formState:{errors}} = useForm({

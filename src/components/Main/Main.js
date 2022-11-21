@@ -5,18 +5,55 @@ import Preloader from '../../common/Preloader/Preloader';
 import styles from './Main.module.scss';
 import Form from './Form/Form';
 
+/**
+ *
+ * Компонент отрисовки для главной страницы
+ *
+ * @return {JSX.Element}
+ * @constructor
+ */
+
 
 const Main = () => {
+
+    /**
+     *
+     * Через хук useContext получаем доступ к необходимым
+     * переменным и функциям
+     *
+     */
+
     const {tasks, isFetching, addTask, fetchTasks,
-            changeTask, deleteTask, completeTask,
-            addFile} = useContext(MainContext)
+            changeTask, deleteTask, completeTask,} = useContext(MainContext)
+
+    /**
+     *
+     * Используем useEffect чтобы подтянуть
+     * существующие задачи при инициализации приложения
+     *
+     */
+
     useEffect(()=>{
         fetchTasks()
     },[])
 
+    /**
+     *
+     * Используем хук useMemo чтобы хранить
+     * и обновлять кол-во выполеннных задач
+     *
+     */
+
     const completedTasks = useMemo(()=> {
         return tasks.filter(task => task.complete === true)
     },[tasks])
+
+    /**
+     * Условие:
+     * если флаг true (происходит какой то ассинхронный запрос к БД)
+     * то получем крутилку (Preloader)
+     *
+     */
 
     if (isFetching) {
         return <Preloader/>
@@ -37,7 +74,6 @@ const Main = () => {
                                             deleteTask={deleteTask}
                                             completeTask={completeTask}
                                             changeTask={changeTask}
-                                            addFile={addFile}
                     />)
                 }
             </div>

@@ -1,5 +1,13 @@
 import styles from './Contacts.module.scss'
 
+/**
+ * Компонет, возвращающий разметку
+ * с данными и адресом для обратной связи.
+ *
+ * @return {JSX.Element}
+ * @constructor
+ */
+
 const Contacts = ()=> {
     return (
         <div className={styles.content}>

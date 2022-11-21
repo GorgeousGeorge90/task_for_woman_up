@@ -5,6 +5,17 @@ import {useReducer} from 'react';
 import axios from 'axios';
 
 
+/**
+ *
+ * Данный компонент явлется оберткой для дочерних элементов,
+ * через который мы можем передавать конеткст
+ *
+ * @param children
+ * @return {JSX.Element}
+ * @constructor
+ */
+
+
 const MainState = ({children})=> {
     const baseURL = 'https://task-e2e98-default-rtdb.firebaseio.com'
     const initialState = {
@@ -13,7 +24,23 @@ const MainState = ({children})=> {
     }
     const [state, dispatch] = useReducer(mainReducer, initialState)
 
+
+    /**
+     *
+     * Функция для изменения  статуса для Preloader
+     *
+     * @param payload {Boolean}
+     */
+
     const getLoading = payload => dispatch(mainActions.getIsFetching(payload))
+
+    /**
+     *
+     * Функция для запроса всех существующих задач с БД
+     *
+     * @return {Promise<void>}
+     */
+
     const fetchTasks = async () => {
         getLoading(true)
         const response= await axios.get(`${baseURL}/tasks.json`)
@@ -30,6 +57,17 @@ const MainState = ({children})=> {
             getLoading(false)
         }
     }
+
+    /**
+     *
+     * Функция для создания задачи
+     *
+     * @param title {string}
+     * @param description {string}
+     * @param date {date}
+     * @return {Promise<void>}
+     */
+
 
     const addTask = async (title, description, date)=> {
         const body = {
@@ -48,6 +86,15 @@ const MainState = ({children})=> {
         getLoading(false)
     }
 
+    /**
+     *
+     * Функция для обновления описания задачи
+     *
+     * @param id {string}
+     * @param text {string}
+     * @return {Promise<void>}
+     */
+
     const changeTask = async (id,text)=> {
         getLoading(true)
         await axios.patch(`${baseURL}/tasks/${id}.json`, {
@@ -57,12 +104,29 @@ const MainState = ({children})=> {
         getLoading(false)
     }
 
+    /**
+     *
+     * Функция для удаления задачи
+     *
+     * @param id {string}
+     * @return {Promise<void>}
+     */
+
     const deleteTask = async id => {
         getLoading(true)
         await axios.delete(`${baseURL}/tasks/${id}.json`)
         dispatch(mainActions.deleteTask(id))
         getLoading(false)
     }
+
+    /**
+     *
+     * Функция для пометки задачи как выполененой
+     * активируется по клику по названию
+     *
+     * @param id {string}
+     * @return {Promise<void>}
+     */
 
     const completeTask = async id => {
         getLoading(true)
@@ -73,17 +137,6 @@ const MainState = ({children})=> {
         getLoading(false)
     }
 
-    const addFile = async (file, id) => {
-        const formData = new FormData()
-        formData.append('newFile', file)
-        await axios.patch(`${baseURL}/tasks/${id}.json`,{
-            file,
-        }, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            }
-        })
-    }
 
     window.state = state
     return (
@@ -96,7 +149,6 @@ const MainState = ({children})=> {
             deleteTask,
             completeTask,
             getLoading,
-            addFile,
         }}>
             {children}
         </MainContext.Provider>

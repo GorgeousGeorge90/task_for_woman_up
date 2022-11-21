@@ -2,6 +2,16 @@ import {useEffect, useMemo} from 'react';
 import {createPortal} from 'react-dom';
 import styles from './Modal.module.scss';
 
+/**
+ *
+ * Компонент, отвечающий за реализацию модального окна
+ * монтируется в отдельный root елемент DOMа при помощи React портала
+ * передается контент.
+ *
+ * @type {Element}
+ */
+
+
 
 const modalRootElement = document.querySelector('#modal')
 
@@ -19,6 +29,16 @@ const Modal = ({open, onClose, filesList, deleteFile})=> {
             return ()=> modalRootElement.removeChild(element)
         }
     })
+
+    /**
+     *
+     * Функция для удаления файла (изображения)
+     * Останавливаем распространение события (закрытие модального окна)
+     *
+     *
+     * @param event
+     * @param name {string}
+     */
 
     const deleteOldFile = (event,name) => {
         event.stopPropagation()
