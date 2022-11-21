@@ -26,6 +26,7 @@ This app can make your daily routine easier:
  
 ### Contacts 
 
-For feedback:`Gambit47@yandex.ru`
+Deployed: https://task-e2e98.web.app/Main
+Feedback:`Gambit47@yandex.ru`
 
 
