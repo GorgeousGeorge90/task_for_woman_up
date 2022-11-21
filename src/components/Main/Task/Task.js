@@ -24,11 +24,11 @@ const Task = ({task, deleteTask, completeTask, changeTask})=> {
     window.fileState = fileState
 
     const filesListRef = ref(storage, `files/${task.id}`)
-    const uploadFile = () => {
+    const uploadFile = async () => {
         if (fileState.file === null) return;
         const fileRef = ref(storage, `files/${task.id}/${fileState.file.name}`)
-        uploadBytes(fileRef, fileState.file).then((snapshot)=> {
-            getDownloadURL(snapshot.ref).then(url => {
+        const snapshot = await uploadBytes(fileRef, fileState.file)
+        const url = await getDownloadURL(snapshot.ref)
                 setFileState(fileState => {
                     const newEl = {
                         name:fileState.file.name,
@@ -36,50 +36,47 @@ const Task = ({task, deleteTask, completeTask, changeTask})=> {
                     }
                     return {
                         ...fileState,
+                        file:null,
                         filesList: [...fileState.filesList,newEl],
                     }
                 })
-
-            })
             alert('File upload!')
-        })
     }
 
-    const deleteFile = name => {
+    const deleteFile = async name => {
         const desertRef = ref(storage, `files/${task.id}/${name}`)
-        deleteObject(desertRef).then(()=> {
+        await deleteObject(desertRef)
             setFileState(fileState => {
                 return {
                     ...fileState,
                     filesList: fileState.filesList.filter(file => file.name !== name)
                 }
             })
-        }).then(() => {
                 alert('File has been deleted!')
-            })
     }
 
         const effect = useRef(false)
-        useEffect(() => {
-            if (effect.current === false) {
-                listAll(filesListRef).then(response => {
-                    response.items.forEach(item => {
-                        getDownloadURL(item).then(url => {
-                            setFileState(fileState => {
-                                const newEl = {
-                                    name:item.name,
-                                    url,
-                                }
-                                return {
-                                    ...fileState,
-                                    filesList: [...fileState.filesList,newEl],
-                                }
-                            })
+        useEffect( () => {
+            async function fetchData() {
+                if (effect.current === false) {
+                    const response = await listAll(filesListRef)
+                    response.items.forEach(async item=> {
+                        const url = await getDownloadURL(item)
+                        setFileState(fileState => {
+                            const newEl = {
+                                name: item.name,
+                                url,
+                            }
+                            return {
+                                ...fileState,
+                                filesList: [...fileState.filesList, newEl],
+                            }
                         })
                     })
-                })
-                return ()=> effect.current = true
+                }
             }
+            fetchData()
+            return () => effect.current = true
         },[])
 
         const EditMode = {

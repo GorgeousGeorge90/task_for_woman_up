@@ -7,7 +7,7 @@ const Header = ()=> {
     return (
         <header className={styles.content}>
             <div className={styles.title}>
-                <h1>ToDo List</h1>
+                <h1>Task catcher</h1>
                 <p>the base app</p>
             </div>
             <nav>

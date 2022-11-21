@@ -76,7 +76,7 @@ const MainState = ({children})=> {
     const addFile = async (file, id) => {
         const formData = new FormData()
         formData.append('newFile', file)
-        const response = await axios.patch(`${baseURL}/tasks/${id}.json`,{
+        await axios.patch(`${baseURL}/tasks/${id}.json`,{
             file,
         }, {
             headers: {
