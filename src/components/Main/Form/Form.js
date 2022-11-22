@@ -7,7 +7,7 @@ import './Form.scss'
  *
  * Компонент, отвечающий за отрисовку формы
  *
- * @param addTask {function}
+ * @param addTask {function} функция для добавления задачи
  * @return {JSX.Element}
  * @constructor
  */

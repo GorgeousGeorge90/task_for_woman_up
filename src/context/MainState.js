@@ -10,7 +10,7 @@ import axios from 'axios';
  * Данный компонент явлется оберткой для дочерних элементов,
  * через который мы можем передавать конеткст
  *
- * @param children
+ * @param children дочерный компонент
  * @return {JSX.Element}
  * @constructor
  */
@@ -29,7 +29,7 @@ const MainState = ({children})=> {
      *
      * Функция для изменения  статуса для Preloader
      *
-     * @param payload {Boolean}
+     * @param payload {Boolean} булево значение true || false
      */
 
     const getLoading = payload => dispatch(mainActions.getIsFetching(payload))
@@ -62,9 +62,9 @@ const MainState = ({children})=> {
      *
      * Функция для создания задачи
      *
-     * @param title {string}
-     * @param description {string}
-     * @param date {date}
+     * @param title {string} название задачи
+     * @param description {string} описание задачи
+     * @param date {date} дата до которой надо завершить задачу
      * @return {Promise<void>}
      */
 
@@ -90,8 +90,8 @@ const MainState = ({children})=> {
      *
      * Функция для обновления описания задачи
      *
-     * @param id {string}
-     * @param text {string}
+     * @param id {string} id задачи
+     * @param text {string} новое описание задачи
      * @return {Promise<void>}
      */
 
@@ -108,7 +108,7 @@ const MainState = ({children})=> {
      *
      * Функция для удаления задачи
      *
-     * @param id {string}
+     * @param id {string} id задачи
      * @return {Promise<void>}
      */
 
@@ -124,7 +124,7 @@ const MainState = ({children})=> {
      * Функция для пометки задачи как выполененой
      * активируется по клику по названию
      *
-     * @param id {string}
+     * @param id {string} id задачи
      * @return {Promise<void>}
      */
 

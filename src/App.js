@@ -4,6 +4,15 @@ import {Routes, Route} from 'react-router-dom';
 import Main from './components/Main/Main';
 import Contacts from './components/Contacts/Contacts';
 
+/**
+ * App module
+ *
+ * @module /app.js
+ * @author Doroshin Egor
+ * @return {JSX.Element}
+ * @constructor
+ */
+
 
 function App() {
   return (

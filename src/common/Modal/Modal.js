@@ -36,8 +36,8 @@ const Modal = ({open, onClose, filesList, deleteFile})=> {
      * Останавливаем распространение события (закрытие модального окна)
      *
      *
-     * @param event
-     * @param name {string}
+     * @param event событие
+     * @param name {string} названия файла ( изображения )
      */
 
     const deleteOldFile = (event,name) => {

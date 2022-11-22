@@ -13,9 +13,9 @@ import dayjs from "dayjs";
  * от родительского компонета.
  *
  * @param task {Object}
- * @param deleteTask {function}
- * @param completeTask {function}
- * @param changeTask {function}
+ * @param deleteTask {function} функция для удаления задачи
+ * @param completeTask {function} функция для завершения задачи
+ * @param changeTask {function} функция для изменения содержимого задачи
  * @return {JSX.Element}
  * @constructor
  */
@@ -88,10 +88,10 @@ const Task = ({task, deleteTask, completeTask, changeTask})=> {
 
     /**
      *
-     * Функция для закгрузки удаления через
+     * Функция для  удаления через
      * специальные инстументы Firebase Storage
      *
-     * @param name {string}
+     * @param name {string} название задачи
      * @return {Promise<void>}
      */
 
