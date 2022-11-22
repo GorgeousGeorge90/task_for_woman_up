@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: context/MainState.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: context/MainState.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {MainContext} from './MainContext';
+import mainReducer from '../reducers/main/mainReducer';
+import {mainActions} from '../reducers/main/main.actions';
+import {useReducer} from 'react';
+import axios from 'axios';
+
+
+/**
+ *
+ * Данный компонент явлется оберткой для дочерних элементов,
+ * через который мы можем передавать конеткст
+ *
+ * @param children дочерный компонент
+ * @return {JSX.Element}
+ * @constructor
+ */
+
+
+const MainState = ({children})=> {
+    const baseURL = 'https://task-e2e98-default-rtdb.firebaseio.com'
+    const initialState = {
+        tasks:[],
+        isFetching:false,
+    }
+    const [state, dispatch] = useReducer(mainReducer, initialState)
+
+
+    /**
+     *
+     * Функция для изменения  статуса для Preloader
+     *
+     * @param payload {Boolean} булево значение true || false
+     */
+
+    const getLoading = payload => dispatch(mainActions.getIsFetching(payload))
+
+    /**
+     *
+     * Функция для запроса всех существующих задач с БД
+     *
+     * @return {Promise&lt;void>}
+     */
+
+    const fetchTasks = async () => {
+        getLoading(true)
+        const response= await axios.get(`${baseURL}/tasks.json`)
+        if (!response.data) {
+            getLoading(false)
+        } else {
+            const payload = Object.keys(response.data).map(key => {
+                return {
+                    ...response.data[key],
+                    id: key,
+                }
+            })
+            dispatch(mainActions.getTasks(payload))
+            getLoading(false)
+        }
+    }
+
+    /**
+     *
+     * Функция для создания задачи
+     *
+     * @param title {string} название задачи
+     * @param description {string} описание задачи
+     * @param date {date} дата до которой надо завершить задачу
+     * @return {Promise&lt;void>}
+     */
+
+
+    const addTask = async (title, description, date)=> {
+        const body = {
+            title,
+            description,
+            date,
+            complete: false,
+        }
+        getLoading(true)
+        const response = await axios.post(`${baseURL}/tasks.json`, body)
+        const payload = {
+            ...body,
+            id: response.data.name,
+        }
+        dispatch(mainActions.addTask(payload))
+        getLoading(false)
+    }
+
+    /**
+     *
+     * Функция для обновления описания задачи
+     *
+     * @param id {string} id задачи
+     * @param text {string} новое описание задачи
+     * @return {Promise&lt;void>}
+     */
+
+    const changeTask = async (id,text)=> {
+        getLoading(true)
+        await axios.patch(`${baseURL}/tasks/${id}.json`, {
+            description: text,
+        })
+        dispatch(mainActions.changeTask(id,text))
+        getLoading(false)
+    }
+
+    /**
+     *
+     * Функция для удаления задачи
+     *
+     * @param id {string} id задачи
+     * @return {Promise&lt;void>}
+     */
+
+    const deleteTask = async id => {
+        getLoading(true)
+        await axios.delete(`${baseURL}/tasks/${id}.json`)
+        dispatch(mainActions.deleteTask(id))
+        getLoading(false)
+    }
+
+    /**
+     *
+     * Функция для пометки задачи как выполененой
+     * активируется по клику по названию
+     *
+     * @param id {string} id задачи
+     * @return {Promise&lt;void>}
+     */
+
+    const completeTask = async id => {
+        getLoading(true)
+        await axios.patch(`${baseURL}/tasks/${id}.json`, {
+            complete: true,
+        })
+        dispatch(mainActions.completeTask(id))
+        getLoading(false)
+    }
+
+
+    window.state = state
+    return (
+        &lt;MainContext.Provider value={{
+            tasks: state.tasks,
+            isFetching: state.isFetching,
+            fetchTasks,
+            addTask,
+            changeTask,
+            deleteTask,
+            completeTask,
+            getLoading,
+        }}>
+            {children}
+        &lt;/MainContext.Provider>
+    )
+}
+
+export default MainState</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_app.js.html">js</a></li><li><a href="Contacts.html">Contacts</a></li><li><a href="Form.html">Form</a></li><li><a href="Header.html">Header</a></li><li><a href="Main.html">Main</a></li><li><a href="MainState.html">MainState</a></li><li><a href="Preloader.html">Preloader</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MainContext">MainContext</a></li><li><a href="global.html#MainSchema">MainSchema</a></li><li><a href="global.html#mainActions">mainActions</a></li><li><a href="global.html#mainReducer">mainReducer</a></li><li><a href="global.html#mainTypes">mainTypes</a></li><li><a href="global.html#modalRootElement">modalRootElement</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Tue Nov 22 2022 14:32:18 GMT+0400 (Armenia Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
